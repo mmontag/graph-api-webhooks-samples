@@ -42,26 +42,28 @@ app.post('/facebook', function(req, res) {
   // Process the Facebook updates here
   res.sendStatus(200);
 
-  var userId = req.body.entry[0].messaging[0].sender.id;
-  var message = req.body.entry[0].messaging[0].message.text;
-  request({
-    url: "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_ACCESS_TOKEN,
-    method: "POST",
-    json: {
-      "recipient":{
-        "id": userId
-      },
-      "message":{
-        "text":"You said '" + message + "'."
+  var messaging = req.body.entry[0].messaging[0];
+  if (messaging.message) {
+    var userId = messaging.sender.id;
+    var message = messaging.message.text;
+    request({
+      url: "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_ACCESS_TOKEN,
+      method: "POST",
+      json: {
+        "recipient":{
+          "id": userId
+        },
+        "message":{
+          "text":"You said '" + message + "'."
+        }
       }
-    }
-  }, function(error, response, body) {
-    console.log('Send message returned HTTP ', response.statusCode);
-    if (response.statusCode != 200) {
-      console.log('> ', body);
-    }
-  });
-
+    }, function(error, response, body) {
+      console.log('Send message returned HTTP ', response.statusCode);
+      if (response.statusCode != 200) {
+        console.log('> ', body);
+      }
+    });
+  }
 });
 
 app.post('/instagram', function(req, res) {
