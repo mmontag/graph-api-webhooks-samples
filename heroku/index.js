@@ -16,7 +16,7 @@ var PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || 'no-access-token-in-env
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ strict: false }));
 
 app.get('/', function(req, res) {
   console.log(req);
