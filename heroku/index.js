@@ -16,7 +16,7 @@ var PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || 'no-access-token-in-env
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
 
-app.use(bodyParser.json({ strict: false }));
+app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
   console.log(req);
@@ -37,6 +37,8 @@ app.get(['/facebook', '/instagram'], function(req, res) {
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:');
   console.log(req.body);
+  console.log('> messaging object:');
+  console.log(req.body.entry[0].messaging);
   // Process the Facebook updates here
   res.sendStatus(200);
 
