@@ -16,7 +16,20 @@ var PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || 'no-access-token-in-env
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    verify: function(req, res, buf, encoding) {
+      // sha1 content
+      // var hash = crypto.createHash('sha1');
+      // hash.update(buf);
+      // req.hasha = hash.digest('hex');
+      // console.log("hash", req.hasha);
+
+      // get rawBody
+      req.rawBody = buf.toString();
+      console.log("rawBody [" + req.rawBody + "]");
+      console.log("x-hub-signature [" + req.headers["x-hub-signature"] + "]");
+    }
+}));
 
 app.get('/', function(req, res) {
   console.log(req);
